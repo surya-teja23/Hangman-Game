@@ -1,14 +1,12 @@
 import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
-import {
-  selectWordToGuess,
-} from "../features/HangmanSlice";
+import { selectWordToGuess } from "../features/HangmanSlice";
 import useHangmanLetterStatus from "../hooks/useHangmanStatus";
 
 const HangmanWord = () => {
   const wordToGuess =
     useSelector(selectWordToGuess) || `${process.env.REACT_APP_WORD}`;
-    const {inactiveLetters, activeLetters} = useHangmanLetterStatus()
+  const { inactiveLetters, activeLetters } = useHangmanLetterStatus();
   const isLoser = inactiveLetters.length >= 6;
 
   return (

@@ -9,10 +9,10 @@ type HangmanState = {
 };
 
 type addGuessedLetterProps = {
-  letter: string
-  isWinner: boolean
-  isLoser: boolean
-}
+  letter: string;
+  isWinner: boolean;
+  isLoser: boolean;
+};
 
 const initialState: HangmanState = {
   wordToGuess: "",
@@ -26,7 +26,7 @@ const hangmanSlice = createSlice({
   initialState,
   reducers: {
     addGuessedLetter: (state, action: PayloadAction<addGuessedLetterProps>) => {
-      const {letter, isLoser,isWinner} = action.payload;
+      const { letter, isLoser, isWinner } = action.payload;
       if (!state.guessedLetters.includes(letter) && !isWinner && !isLoser) {
         state.guessedLetters.push(letter);
       }
@@ -36,7 +36,7 @@ const hangmanSlice = createSlice({
       state.guessedLetters = [];
       state.status = "idle";
       state.error = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -44,10 +44,13 @@ const hangmanSlice = createSlice({
         state.status = "pending";
         state.error = null;
       })
-      .addCase(fetchNewWord.fulfilled, (state, action: PayloadAction<string>) => {
-        state.status = "fulfilled";
-        state.wordToGuess = action.payload;
-      })
+      .addCase(
+        fetchNewWord.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.status = "fulfilled";
+          state.wordToGuess = action.payload;
+        }
+      )
       .addCase(fetchNewWord.rejected, (state, action) => {
         state.status = "rejected";
         state.error = action.error.message as string;
@@ -68,8 +71,12 @@ export const fetchNewWord = createAsyncThunk(
 );
 
 export const { addGuessedLetter, reset } = hangmanSlice.actions;
-export const selectWordToGuess = (state: {hangman: HangmanState}) => state.hangman.wordToGuess;
-export const selectGuessedLetters = (state: {hangman: HangmanState}) => state.hangman.guessedLetters;
-export const selectApiStatus = (state: {hangman: HangmanState}) => state.hangman.status; 
-export const selectError = (state: {hangman: HangmanState}) => state.hangman.error;
+export const selectWordToGuess = (state: { hangman: HangmanState }) =>
+  state.hangman.wordToGuess;
+export const selectGuessedLetters = (state: { hangman: HangmanState }) =>
+  state.hangman.guessedLetters;
+export const selectApiStatus = (state: { hangman: HangmanState }) =>
+  state.hangman.status;
+export const selectError = (state: { hangman: HangmanState }) =>
+  state.hangman.error;
 export default hangmanSlice.reducer;

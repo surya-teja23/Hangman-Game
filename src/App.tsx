@@ -10,7 +10,7 @@ import useKeyboardPress from "./hooks/useKeyboardPress";
 
 const App = () => {
   useFetchNewWord();
-  useKeyboardPress()
+  useKeyboardPress();
 
   return (
     <MainWrapper>

@@ -25,5 +25,5 @@ root.render(
         <CssBaseline />
       </ThemeProvider>
     </Provider>
-   </React.StrictMode>
+  </React.StrictMode>
 );

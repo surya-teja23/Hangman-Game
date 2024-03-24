@@ -1,11 +1,11 @@
-import { ReactNode} from 'react'
-import Box from '@mui/material/Box'
+import { ReactNode } from "react";
+import Box from "@mui/material/Box";
 
 type MainWrapperProps = {
   children: ReactNode;
 };
 
-const MainWrapper = ({children}: MainWrapperProps) => {
+const MainWrapper = ({ children }: MainWrapperProps) => {
   return (
     <Box
       sx={{
@@ -20,7 +20,7 @@ const MainWrapper = ({children}: MainWrapperProps) => {
     >
       {children}
     </Box>
-  )
-}
+  );
+};
 
-export default MainWrapper
+export default MainWrapper;
