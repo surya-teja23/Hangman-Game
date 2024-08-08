@@ -3,6 +3,7 @@ import api from "../hooks/useAxios";
 
 type HangmanState = {
   wordToGuess: string;
+  charMapping: Map<string, number>;
   guessedLetters: string[];
   status: "idle" | "pending" | "fulfilled" | "rejected";
   error: string | null;
@@ -16,6 +17,7 @@ type addGuessedLetterProps = {
 
 const initialState: HangmanState = {
   wordToGuess: "",
+  charMapping: new Map(),
   guessedLetters: [],
   status: "idle", // idle | pending | fulfilled | rejected
   error: null,
@@ -33,6 +35,7 @@ const hangmanSlice = createSlice({
     },
     reset: (state) => {
       state.wordToGuess = "";
+      state.charMapping = new Map();
       state.guessedLetters = [];
       state.status = "idle";
       state.error = null;
@@ -49,6 +52,19 @@ const hangmanSlice = createSlice({
         (state, action: PayloadAction<string>) => {
           state.status = "fulfilled";
           state.wordToGuess = action.payload;
+
+          state.charMapping = new Map();
+          const usedNumbers = new Set<number>();
+          for (const char of action.payload) {
+            if (!state.charMapping.has(char)) {
+              let randomNum = Math.floor(Math.random() * 26);
+              while (usedNumbers.has(randomNum)) {
+                randomNum = Math.floor(Math.random() * 26);
+              }
+              usedNumbers.add(randomNum);
+              state.charMapping.set(char, randomNum);
+            }
+          }
         }
       )
       .addCase(fetchNewWord.rejected, (state, action) => {
@@ -73,6 +89,8 @@ export const fetchNewWord = createAsyncThunk(
 export const { addGuessedLetter, reset } = hangmanSlice.actions;
 export const selectWordToGuess = (state: { hangman: HangmanState }) =>
   state.hangman.wordToGuess;
+export const selectCharMapping = (state: { hangman: HangmanState }) =>
+  state.hangman.charMapping;
 export const selectGuessedLetters = (state: { hangman: HangmanState }) =>
   state.hangman.guessedLetters;
 export const selectApiStatus = (state: { hangman: HangmanState }) =>

@@ -1,11 +1,12 @@
 import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
-import { selectWordToGuess } from "../features/HangmanSlice";
+import { selectCharMapping, selectWordToGuess } from "../features/HangmanSlice";
 import useHangmanLetterStatus from "../hooks/useHangmanStatus";
 
 const HangmanWord = () => {
   const wordToGuess =
     useSelector(selectWordToGuess) || `${process.env.REACT_APP_WORD}`;
+  const charMapping = useSelector(selectCharMapping);
   const { inactiveLetters, activeLetters } = useHangmanLetterStatus();
   const isLoser = inactiveLetters.length >= 6;
 
@@ -18,6 +19,7 @@ const HangmanWord = () => {
         fontWeight: "bold",
         textTransform: "uppercase",
         fontFamily: "monospace",
+        marginBottom: "1rem"
       }}
     >
       {wordToGuess.split("").map((letter, index) => {
@@ -25,7 +27,7 @@ const HangmanWord = () => {
           <Box
             component="span"
             key={index}
-            sx={{ borderBottom: ".1em solid white" }}
+            sx={{ borderBottom: ".1em solid white", position: "relative" }}
           >
             <Box
               component="span"
@@ -39,6 +41,16 @@ const HangmanWord = () => {
               }}
             >
               {letter}
+            </Box>
+            <Box sx={{
+              position: "absolute",
+              color: "grey",
+              fontSize: "1rem",
+              bottom: "-2rem",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}>
+              {charMapping.get(letter)}
             </Box>
           </Box>
         );
